@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation App</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2E51A2; /* Blue background */
+            color: white; /* White text */
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff; /* White text */
+            margin-top: 20px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            border: 2px solid #ffffff; /* White border */
+            border-radius: 5px;
+            margin-right: 10px;
+            background-color: #ffffff; /* White input field */
+            color: #333; /* Dark text inside input */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2e4450; /* White button */
+            color: #ffffff; /* Blue text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #dddddd; /* Slightly gray when hovered */
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff; /* White text */
+            margin-top: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            display: inline
+        }
+
+        li {
+            background-color: #ffffff; /* White background for list items */
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 18px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #333; /* Dark text for list items */
+            width: 80%; /* Set width to 80% of the container */
+            max-width: 600px; /* Set a maximum width */
+            margin-left: auto; /* Center the list item */
+            margin-right: auto; /* Center the list item */
+        }
+
+        .loading-circle {
+            border: 8px solid #ddd;
+            border-top: 8px solid #2e4450;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Hidden initially */
+        }
+
+
+        /* Spin animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .info-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #ffffff; /* White text */
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Anime Recommendation App</h1>
+    <form id="usernameForm">
+        <input type="text" id="username" name="username" placeholder="My Anime List Username" required>
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    <h2>Recommendations:</h2>
+    <ul id="recommendationList"></ul>
+
+    <!-- Loading bar -->
+    <div class="loading-circle" id="loadingCircle"></div>
+
+    <!-- Info Message -->
+    <div class="info-message" id="infoMessage" style="display: none;">
+        If you have 0 predicted ratings you may need more ratings on your MAL account.
+    </div>
+    <div class="submit-ratings" id="submitFeedback" style="display: none;">
+        <button type="submit">Submit True Rating</button>
+    </div>
+    <script>
+        document.getElementById('usernameForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+
+            // Show loading bar
+            const loadingCircle = document.getElementById('loadingCircle');
+            loadingCircle.style.display = 'block';
+            // Simulate loading progress
+
+            // Make the POST request to Django backend to get recommendations
+            fetch('/get-recommendations/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading bar
+                loadingCircle.style.display = 'none';
+                data = data['message']
+                console.log(data)
+                
+                // Parse the recommendations string into an actual array
+                let recommendations = [];
+                try {
+                    if (data === "User not found") {
+                        // Handle the case where the user was not found
+                        recommendations = ["No user found. Please check the username and try again or make your anime list public"];
+                    } else {
+                        // Parse recommendations if valid
+                        recommendations = JSON.parse(data); // Parse the string to an array
+                    }
+                } catch (error) {
+                    console.error('Error parsing recommendations:', error);
+                }
+                
+                // Display the recommendations
+                const list = document.getElementById('recommendationList');
+                list.innerHTML = ''; // Clear the list first
+                
+                // Check if recommendations is an array and handle the message or items
+                if (recommendations[0] && recommendations[0] === "No user found. Please check the username and try again or make your anime list public") {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = recommendations[0]; // Display the "No User Found" message
+                    list.appendChild(listItem);
+                } else {
+                    // Display the recommendation items if they are valid
+                    let lowRatingFound = false;
+                    recommendations.forEach(item => {
+                        if (Array.isArray(item) && item.length === 3) {
+                            const listItem = document.createElement('li');
+                            
+                            
+                           
+                           
+                            // Create a span for the title with bold text
+                            const titleSpan = document.createElement('span');
+                            titleSpan.style.fontWeight = 'bold'; // Make title bold
+                            const titleLink = document.createElement('a');
+                            titleLink.textContent = `${item[0]}: `;  // The title text
+                            titleLink.href = `https://myanimelist.net/anime/${item[2]}`;  // Link to the webpage using the ID in item[2]
+                            titleLink.target = '_blank';  // Open the link in a new tab
+                    
+                            titleSpan.appendChild(titleLink);
+                            // Create a span for the rating
+                            const ratingSpan = document.createElement('span');
+                            const rating = item[1].toFixed(1);
+                            ratingSpan.textContent = `Predicted Rating ${rating}`;
+                            
+                            // Append title and rating to the list item
+                            listItem.appendChild(titleSpan);
+                            listItem.appendChild(ratingSpan);
+                            
+                            // Append the list item to the list
+                            list.appendChild(listItem);
+
+                            // Check if any rating is low (example, below 4)
+                            if (parseFloat(rating) < 1) {
+                                lowRatingFound = true;
+                            }
+                        }
+                    });
+
+                    // Display info message if low predicted ratings are found
+                    const infoMessage = document.getElementById('infoMessage');
+                    if (lowRatingFound) {
+                        infoMessage.style.display = 'block';
+                    } else {
+                        infoMessage.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching recommendations:', error);
+                loadingBar.classList.add('hidden');
+                const list = document.getElementById('recommendationList');
+                list.innerHTML = "<li>Sorry, an error occurred while fetching recommendations. Please try again later.</li>";
+            });
+        });
+    </script>
+</body>
+</html>
