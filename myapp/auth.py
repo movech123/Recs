@@ -7,8 +7,8 @@ import json
 import os
 
 # Your MyAnimeList credentials and settings
-client_id = "1945f96ab7924c0d9100c7ac740a30ca"  # Replace with your actual Client ID
-client_secret = '65d2842a50c4ae3fbb78ed26fe3b4f71ea0fda86d0919a65e0da245c882a6fec'  # Replace with your actual Client Secret
+client_id = "your-key"  # Replace with your actual Client ID
+client_secret = 'your-key'  # Replace with your actual Client Secret
 redirect_uri = "http://localhost:5000/callback"
 
 # Token URL and Authorization URL
