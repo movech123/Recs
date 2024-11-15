@@ -10,7 +10,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
 # MongoDB setup
-uri = "mongodb+srv://vmodalla:1234@cluster0.znmzl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+uri ="your-connection-string"
 client = MongoClient(uri, server_api=ServerApi('1'))
 database = client.get_database("users")
 users_collection = database.get_collection("rankings")
