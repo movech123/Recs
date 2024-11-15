@@ -1,6 +1,6 @@
 # Anime Recommendation System
 
-A full-stack anime recommendation app that provides personalized suggestions using Sparse Low Rank Matrix Completion and data from MyAnimeList.
+A full-stack anime recommendation app that provides personalized suggestions for shows and movies using Sparse Low Rank Matrix Completion and data from MyAnimeList.
 
 Check it out at https://animerec.net 
 
