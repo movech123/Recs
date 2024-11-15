@@ -1,6 +1,6 @@
 # Anime Recommendation System
 
-A full-stack anime recommendation app that provides personalized suggestions using machine learning and data from MyAnimeList.\
+A full-stack anime recommendation app that provides personalized suggestions using machine learning and data from MyAnimeList.
 
 Check it out at https://animerec.net 
 
