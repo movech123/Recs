@@ -1,9 +1,10 @@
 # Anime Recommendation System
 
-A full-stack anime recommendation app that provides personalized suggestions using machine learning and data from MyAnimeList.
+A full-stack anime recommendation app that provides personalized suggestions using Sparse Low Rank Matrix Completion and data from MyAnimeList.
 
 Check it out at https://animerec.net 
 
+Inspired by Andreas Elsener's and Sara van de Geer's Research paper: https://arxiv.org/pdf/1603.09071
 ## Tech Stack
 - **Backend**: Django 4.2
 - **Database**: MongoDB
