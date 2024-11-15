@@ -12,7 +12,7 @@ def recommend_shows(username, k=5):
 
     np.random.seed(42)
     # MongoDB connection setup
-    uri = "mongodb+srv://vmodalla:1234@cluster0.znmzl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    uri = "your-db-connection-string"
     client = MongoClient(uri)
     database = client.get_database("users")
     users_collection = database.get_collection("rankings")
