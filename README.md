@@ -5,7 +5,7 @@ Check it out at https://animerec.net
 Full Stack Diagram: 
 ```mermaid
 
-%%{init: {'theme': 'base', 'themeVariables': { 'background': '#ffffff' }}}%%
+
 flowchart TD
     User((User))
     Frontend[Web Interface]
