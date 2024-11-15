@@ -13,7 +13,6 @@ flowchart TD
     API[Anime API]
     DB[(Database)]
     
-    %% Data Processing nodes
     Clean[Data Cleanup]
     Matrix[Matrix Approximation]
     Match[Recommendation Matching]
@@ -37,23 +36,21 @@ flowchart TD
         API
     end
 
-    %% Main flow
-    User -->|1. Request| Frontend
-    Frontend -->|2. Send Preferences| Backend
-    Backend -->|3. Query| API
-    API -->|4. Return Anime Data| Backend
+    User --> Frontend
+    Frontend --> Backend
+    Backend --> API
+    API --> Backend
     
-    %% Processing flow
-    Backend -->|5. Raw Data| Clean
-    Clean -->|6. Clean Data| Matrix
-    Matrix -->|7. User-Anime Matrix| Match
-    Match -->|8. Get Similar Users| DB
-    DB -->|9. User History| Match
-    Match -->|10. Top Matches| Backend
+    Backend --> Clean
+    Clean --> Matrix
+    Matrix --> Match
+    Match --> DB
+    DB --> Match
+    Match --> Backend
     
-    Backend -->|11. Store Results| DB
-    Backend -->|12. Send Recommendations| Frontend
-    Frontend -->|13. Display| User
+    Backend --> DB
+    Backend --> Frontend
+    Frontend --> User
 
     classDef default fill:#ffffff,stroke:#333,stroke-width:2px
     classDef client fill:#e1f5fe,stroke:#333,stroke-width:2px
