@@ -10,7 +10,7 @@ Inspired by Andreas Elsener's and Sara van de Geer's Research paper: https://arx
 - **Database**: MongoDB
 - **ML Libraries**: NumPy, Pandas, Scikit-Learn
 - **API**: MyAnimeList API
-- **Authentication**: Django Session Auth
+- **Authentication**: OAuth 2.0
 - **Cloud and Domain**: AWS, Route43, Caddy
 
 ## Features
